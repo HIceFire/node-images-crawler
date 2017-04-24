@@ -1,0 +1,23 @@
+{
+  "name": "node-images-crawler",
+  "version": "1.0.0",
+  "description": "a crawler for 3D graph.",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^0.22.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HIceFire/node-images-crawler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HIceFire/node-images-crawler/issues"
+  },
+  "homepage": "https://github.com/HIceFire/node-images-crawler#readme"
+}
