@@ -19,12 +19,18 @@ for (var i = 10; i < 183; i++) {
 	(function (index) {
 		var interval = (index - 10) * config.interval + Math.random() * 100
 		var url = 'http://www.3wtu.com/picture/' + index + '.html'
-		setTimeout(function () { getPicsUrl(url) }, interval)
+		setTimeout(function () {
+			getPicsUrl(url, function(picLink) {
+				getPicData(picLink, function (picData) {
+					download(picData.data, picData.name)
+				})
+			})
+		}, interval)
 	})(i)
 }
 
 // 获取图片的链接与名字
-function getPicsUrl(url) {
+function getPicsUrl(url, callback) {
 
 	http.get(url, function(res) {
 		var chunks = []
@@ -48,7 +54,7 @@ function getPicsUrl(url) {
 			// 图片名字
 			var name = $('.detailed-title h4').html()
 
-			download({ url: pic, name: name })
+			callback({ url: pic, name: name })
 		})
 
 	})
@@ -59,7 +65,7 @@ function getPicsUrl(url) {
 }
 
 // 下载图片至本地
-function download(pic) {
+function getPicData(pic, callback) {
 
 	// 文件类型后缀名
 	var fileType = pic.url.split('.').pop()
@@ -80,19 +86,22 @@ function download(pic) {
 		})
 
 		res.on('end', function() {
-			// 保存至本地
-			fs.writeFile(name, data, 'binary', function(err) {
-				if (err) {
-					return console.log(err)
-				} else {
-					console.log(name + ' downloaded successfully')
-				}
-			})
+			callback({name: name, data: data})
 		})
 
 	})
 	.on('error', function(err) {
 			console.log(err)
+	})
+}
+
+function download(data, name) {
+	fs.writeFile(name, data, 'binary', function(err) {
+		if (err) {
+			return console.log(err)
+		} else {
+			console.log(name + ' downloaded successfully')
+		}
 	})
 }
 
