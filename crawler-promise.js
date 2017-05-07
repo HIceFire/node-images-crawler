@@ -9,13 +9,11 @@ const config = {
 	interval: 300,
 }
 
-
 if ( !isExit(config.dirPath) ) {
 	fs.mkdirSync(config.dirPath)
 }
 
 getPicsUrl(domain).then(picsArr => startUp(picsArr))
-
 
 function startUp (picsArr) {
 	for (let i = 0; i < picsArr.length; i++) {

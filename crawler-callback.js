@@ -5,7 +5,7 @@ const iconv = require('iconv-lite')
 
 var domian = 'http://www.3wtu.com'
 var config = {
-	dirPath: __dirname + '/' + 'imagesByNormal/',
+	dirPath: __dirname + '/' + 'imagesByCallback/',
 	interval: 300,
 }
 
@@ -22,7 +22,13 @@ for (var i = 10; i < 183; i++) {
 		setTimeout(function () {
 			getPicsUrl(url, function(picLink) {
 				getPicData(picLink, function (picData) {
-					download(picData.data, picData.name)
+					download(picData.data, picData.name, function (err) {
+						if (err) {
+							console.log(err)
+						} else {
+							console.log(picData.name + ' downloaded successfully')
+						}
+					})
 				})
 			})
 		}, interval)
@@ -95,14 +101,8 @@ function getPicData(pic, callback) {
 	})
 }
 
-function download(data, name) {
-	fs.writeFile(name, data, 'binary', function(err) {
-		if (err) {
-			return console.log(err)
-		} else {
-			console.log(name + ' downloaded successfully')
-		}
-	})
+function download(data, name, callback) {
+	fs.writeFile(name, data, 'binary', callback)
 }
 
 // 判断 文件/目录 是否存在 （ 同步的 ）
